@@ -1,0 +1,30 @@
+services:
+  foodorderingsystem:
+    image: foodorderingsystem
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    ports:
+      - 8080:8080
+    environment:
+      - SPRING_DATA_MONGODB_URI=mongodb://mongo:27017/food_ordering_db 
+    depends_on:
+      - mongo
+
+  mongo:
+    image: mongo:latest  # Uses the official MongoDB image
+    container_name: mongo-container
+    ports:
+      - "27017:27017"  # Maps MongoDB port to localhost
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root  # MongoDB root username
+      MONGO_INITDB_ROOT_PASSWORD: password  # MongoDB root password
+    volumes:
+      - mongo-data:/data/db  # Persistent data storage for MongoDB
+
+volumes:
+  mongo-data:  # Defines a named volume for MongoDB data persistence
+
+
+
+

@@ -1,0 +1,32 @@
+services:
+  foodorderingsystem:
+    image: foodorderingsystem-debug  # Use a different tag or image for debugging
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    ports:
+      - 8080:8080
+      - 5005:5005  # Debugging port for Java debugging
+    environment:
+      - SPRING_DATA_MONGODB_URI=mongodb://mongo:27017/food_ordering_db
+      - JAVA_TOOL_OPTIONS=-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005  # Enable remote debugging
+    depends_on:
+      - mongo
+    command: ["java", "-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005", "-jar", "/path/to/your-app.jar"]
+    volumes:
+      - ./src:/app/src  # Mount local source code for live code editing
+      - ./target:/app/target  # Mount compiled classes for debugging
+
+  mongo:
+    image: mongo:latest
+    container_name: mongo-container
+    ports:
+      - "27017:27017"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: password
+    volumes:
+      - mongo-data:/data/db
+
+volumes:
+  mongo-data:
