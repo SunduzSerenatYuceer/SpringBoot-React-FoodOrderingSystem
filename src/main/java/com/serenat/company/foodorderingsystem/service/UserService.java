@@ -2,11 +2,8 @@ package com.serenat.company.foodorderingsystem.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-
 import com.serenat.company.foodorderingsystem.dto.UserRegistrationDto;
-import com.serenat.company.foodorderingsystem.model.Client;
 import com.serenat.company.foodorderingsystem.model.User;
-import com.serenat.company.foodorderingsystem.model.constants.UserRole;
 import com.serenat.company.foodorderingsystem.repository.UserRepository;
 import com.serenat.company.foodorderingsystem.utils.SequenceGeneratorService;
 
@@ -17,6 +14,14 @@ public class UserService {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired 
+    private ClientService clientService;
+
+    @Autowired
+    private AdminService adminService;
+
+    @Autowired StoreService storeService;
 
     @Autowired
     private SequenceGeneratorService sequenceGeneratorService;
@@ -46,24 +51,22 @@ public class UserService {
         userRepository.save(newUser);
 
 
-/*
- *         switch (newUser.getRole()) {
-            case Client:
-                Client newClient = new Client(userId);
-                clientRepository.save(newClient);
+        switch (newUser.getRole()) {
 
-            case Store:
-                Store newStore = new Store(userId);
+            case CLIENT:
+                clientService.createClient(userId);
 
-            case Admin: 
-                Admin newAdmin = new Admin(userId);
+            case STORE:
+                storeService.createStore(userId);
+
+            case ADMIN: 
+                //adminService.createAdmin(userId);
 
             default:
                 break;
+
         }
- */
-
-
-        
+    
     }
+
 }

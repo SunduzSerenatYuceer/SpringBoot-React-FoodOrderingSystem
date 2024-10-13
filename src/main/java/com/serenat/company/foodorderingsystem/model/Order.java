@@ -43,7 +43,6 @@ public class Order {
         this.discount = discount;
         this.items = items;
         this.total_price = calculateTotalPrice(this.items);
-
     }
 
 

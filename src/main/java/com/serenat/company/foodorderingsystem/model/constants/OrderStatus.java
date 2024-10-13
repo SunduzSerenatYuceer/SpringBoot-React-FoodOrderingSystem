@@ -12,4 +12,5 @@ public enum OrderStatus {
     REJECTED_BY_STORE,
     FAIL,
     REFUNDED;
+    
 }

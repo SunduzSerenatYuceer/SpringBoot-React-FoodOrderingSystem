@@ -41,7 +41,7 @@ public class Client {
     public Client(Long clientId) {
         this.clientId = clientId;
         this.basketId = generateBasketId();
-        this.userRole = UserRole.Client;
+        this.userRole = UserRole.CLIENT;
     }
 
     public Long getClientId() {
