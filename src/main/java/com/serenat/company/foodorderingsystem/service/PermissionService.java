@@ -4,6 +4,7 @@ import java.util.HashSet;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.stereotype.Service;
 
 import com.serenat.company.foodorderingsystem.factory.PermissionFactory;
@@ -37,22 +38,27 @@ public class PermissionService {
 
 
     public Permission savePermission(Permission permission) {
-
-        if (permissionRepository.existsById(permission.getName())) {
-            throw new IllegalArgumentException("Permission with this name alread");
-        }
-
         return permissionRepository.save(permission);
     }
     
-    public Optional<Permission> findPermissionByName(String name) {
-        return permissionRepository.findById(name);
+    public Permission findPermissionById(String name) {
+        Optional<Permission> permission = permissionRepository.findById(name);
+
+        if(permission.isPresent()) {
+            return permission.get();
+        }
+        else{
+            throw new ResourceNotFoundException("Permission not found with ID: " + name);
+        }
     }
 
-    public void deletePermissionByName(String name) {
-        permissionRepository.deleteById(name);
-    }
+    public String deletePermissionById(String name) {
 
+        Permission existingPermission = findPermissionById(name);
+        permissionRepository.delete(existingPermission);
+        return "Permission is deleted succeessfully.";
+    }
+ 
     @PostConstruct
     public void initializePermissions() {
         
