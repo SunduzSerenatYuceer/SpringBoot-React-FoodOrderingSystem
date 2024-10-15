@@ -1,6 +1,8 @@
 package com.serenat.company.foodorderingsystem.dto;
 
 import com.mongodb.lang.NonNull;
+import com.mongodb.lang.Nullable;
+import com.serenat.company.foodorderingsystem.model.constants.AdminType;
 import com.serenat.company.foodorderingsystem.model.constants.UserRole;
 
 public class UserRegistrationDto {
@@ -19,6 +21,8 @@ public class UserRegistrationDto {
     private String telNumber;
     @NonNull
     private UserRole role;
+    @Nullable
+    private AdminType adminType;
 
 
     public String getUsername() {
@@ -71,6 +75,18 @@ public class UserRegistrationDto {
 
     public UserRole getRole() {
         return role;
+    }
+
+    public void setRole(UserRole role) {
+        this.role = role;
+    }
+
+    public AdminType getAdminType() {
+        return adminType;
+    }
+
+    public void setAdminType(AdminType adminType) {
+        this.adminType = adminType;
     }
 
 

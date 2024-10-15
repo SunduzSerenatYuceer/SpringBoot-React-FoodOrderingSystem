@@ -30,12 +30,11 @@ public class Admin {
     private HashSet<Permission> permissions;
 
 
-    public Admin(Long adminId, AdminType adminType, HashSet<Permission> permissions) {
+    public Admin(Long adminId, AdminType adminType) {
         this.adminId = adminId;
         this.userRole = UserRole.ADMIN;
         this.adminStatus = UserStatus.ACTIVE;
         this.adminType = adminType;
-        this.permissions = permissions;
     }
 
 
@@ -59,19 +58,9 @@ public class Admin {
         return permissions;
     }
 
-    public String addPermission(Permission permission) {
-        this.permissions.add(permission);
-        return "New permission is added successfully.";
+    public void setPermissions(HashSet<Permission> permissions ) {
+        this.permissions = permissions;
     }
 
-    public String removePermission(Permission permission) {
-        this.permissions.remove(permission);
-        return "Permision is removed successfully.";
-    }
-
-    public String listAllPermissionsWithDescriptions() {
-        // Todo
-        return "";
-    }
 
 }
