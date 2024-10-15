@@ -2,17 +2,10 @@ package com.serenat.company.foodorderingsystem.model;
 
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Set;
-import javax.xml.crypto.OctetStreamData;
 import org.springframework.data.annotation.*;
-import org.springframework.data.mongodb.core.aggregation.SetOperators.SetIntersection;
-import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.mongodb.lang.NonNull;
-import com.mongodb.lang.Nullable;
 import com.serenat.company.foodorderingsystem.model.constants.UserRole;
-import jakarta.annotation.Generated;
 import java.util.UUID;
 
 
@@ -29,7 +22,7 @@ public class Client {
 
     private HashSet<Coupon> coupons = new HashSet<>();
 
-    private HashSet<Store> favorite_stores = new HashSet<>();
+    private HashSet<Long> favorite_stores_ids = new HashSet<>();
 
     @NonNull
     private String basketId;
@@ -40,7 +33,7 @@ public class Client {
 
     public Client(Long clientId) {
         this.clientId = clientId;
-        this.basketId = generateBasketId();
+        this.basketId = generateBasket().getBasketId();
         this.userRole = UserRole.CLIENT;
     }
 
@@ -89,8 +82,36 @@ public class Client {
         return UUID.randomUUID().toString();
     }
 
-    private String getBasketId() {
+    public String getBasketId() {
         return this.basketId;
+    }
+
+    private Basket generateBasket() {
+        return new Basket(this.generateBasketId(), this.clientId);
+    }
+
+    public HashSet<Long> getFavoriteStoresIds() {
+        return favorite_stores_ids;
+    }
+
+    public void setFavoriteStoresIds(HashSet<Long> favorite_stores_ids) {
+        this.favorite_stores_ids = favorite_stores_ids;
+    }
+
+    public void addFavoriteStores(Long storeId) {
+
+        if (!favorite_stores_ids.contains(storeId)) {
+
+            this.favorite_stores_ids.add(storeId);   
+        }
+    }
+
+    public void removeFromFavoriteStores(Long storeId) {
+
+        if (favorite_stores_ids.contains(storeId)) {
+
+            this.favorite_stores_ids.remove(storeId);   
+        }
     }
 
 }

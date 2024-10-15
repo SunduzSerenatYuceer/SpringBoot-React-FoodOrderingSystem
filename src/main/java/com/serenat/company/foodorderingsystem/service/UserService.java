@@ -1,5 +1,8 @@
 package com.serenat.company.foodorderingsystem.service;
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import com.serenat.company.foodorderingsystem.dto.UserRegistrationDto;
@@ -28,7 +31,7 @@ public class UserService {
 
     
 
-    public void registerUser(UserRegistrationDto userDto) {
+    public User registerUser(UserRegistrationDto userDto) {
 
         if (userRepository.findByUsername(userDto.getUsername()).isPresent()) {
             throw new IllegalArgumentException("Username already exist."); 
@@ -65,9 +68,35 @@ public class UserService {
 
             default:
                 break;
-
         }
-    
+
+        return newUser;
     }
+
+
+    public User findUserById(Long userId) {
+
+        Optional<User> user = userRepository.findById(userId);
+
+        if(user.isPresent()) {
+            return user.get();
+        }
+        else{
+            throw new ResourceNotFoundException("User not found by Id: " + userId);
+        }
+    }
+
+
+    public String deleteUser(Long userId) {
+
+        User user = findUserById(userId);
+        userRepository.delete(user);
+        return "User is deleted successfully.";
+    }
+
+    public void saveUser(User user) {
+        userRepository.save(user);
+    }
+
 
 }
