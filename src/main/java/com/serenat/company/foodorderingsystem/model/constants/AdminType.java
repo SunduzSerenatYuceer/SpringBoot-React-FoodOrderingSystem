@@ -5,7 +5,7 @@ public enum AdminType {
     SUPER_ADMIN,
     ADMIN,
     MODERATOR,
-    STORE_ADMİN,
+    STORE_ADMIN,
     FINANCE_ADMIN
-    
+
 }
