@@ -44,7 +44,8 @@ public class UserService {
             UserhashedPassword,
             userDto.getRole(),
             userDto.getName(),
-            userDto.getSurname()
+            userDto.getSurname(),
+            userDto.getAdminType()
         );
 
         newUser.setName(UserhashedPassword);
@@ -60,7 +61,7 @@ public class UserService {
                 storeService.createStore(userId);
 
             case ADMIN: 
-                //adminService.createAdmin(userId);
+                adminService.createAdmin(userId, newUser.getAdminType());
 
             default:
                 break;

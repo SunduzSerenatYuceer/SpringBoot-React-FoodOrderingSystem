@@ -4,6 +4,8 @@ import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.mongodb.lang.NonNull;
+import com.mongodb.lang.Nullable;
+import com.serenat.company.foodorderingsystem.model.constants.AdminType;
 import com.serenat.company.foodorderingsystem.model.constants.UserRole;
 
 
@@ -34,9 +36,14 @@ public class User {
     @JsonIgnore
     private String hashedPassword;
 
+    @NonNull
     private UserRole role;
 
-    public User(Long id, String username, String hashPassword, String mail, UserRole role, String name, String surname) {
+    @Nullable
+    private AdminType adminType;
+
+
+    public User(Long id, String username, String hashPassword, String mail, UserRole role, String name, String surname, AdminType adminRole) {
         this.id = id;
         this.username = username;
         this.mail = mail;
@@ -44,6 +51,7 @@ public class User {
         this.role = role;
         this.name = name;
         this.surname = surname;
+        this.adminType = (role != UserRole.ADMIN) ? null : adminRole;
     }
 
 
@@ -93,6 +101,14 @@ public class User {
 
     public void setRole(UserRole role){
         this.role = role;
+    }
+
+    public AdminType getAdminType() {
+        return adminType;
+    }
+
+    public void setAdminType(AdminType adminType) {
+        this.adminType = adminType;
     }
 
 
