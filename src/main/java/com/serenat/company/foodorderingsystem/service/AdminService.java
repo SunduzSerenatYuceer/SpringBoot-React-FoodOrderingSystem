@@ -7,6 +7,7 @@ import javax.management.RuntimeErrorException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
+import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.stereotype.Service;
 
 import com.serenat.company.foodorderingsystem.manager.PermissionManager;
@@ -75,7 +76,7 @@ public class AdminService {
             return admin.get();
         }
         else {
-            throw new RuntimeException("Admin not with ID: " + id);
+            throw new ResourceNotFoundException("Admin not found with ID: " + id);
         }
     }
  
@@ -84,11 +85,11 @@ public class AdminService {
         return adminRepository.save(admin);
     }
 
-    public String deleteAdminById(Admin admin) {
+    public String deleteAdminById(Long adminId) {
 
-        adminRepository.deleteById(admin.getAdminId());
-        return "Admin user is deleted successfully";
-        
+        Admin existingAdmin = findAdminById(adminId);
+        adminRepository.delete(existingAdmin);
+        return "Store is deleted successfully";
     }
 
 }
